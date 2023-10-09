@@ -12,6 +12,7 @@ const port = process.env.PORT;
 app.use(bodyParser.json("application/json"));
 
 app.post("/webhook", async (req, res) => {
+    console.log("Req Received");
     const isVerified = await verifyWebhookSignature(req, res);
     if (!isVerified) {
         console.error("Webhook Auth failed");

@@ -1,10 +1,10 @@
 const crypto = require('crypto');
-require('dotenv').config({
-    path: "./env"
-});
+require('dotenv').config();
 
 const verifyWebhookSignature = async (req, res, buf) => {
     const signature = req.query.signature;
+    console.log(process.env.SHARED_KEY);
+    console.log("signature: " + signature);
     if (signature && req.method === "POST") {
         const hmac = crypto.createHmac("sha256", process.env.SHARED_KEY);
         hmac.update(buf);
