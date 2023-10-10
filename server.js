@@ -12,7 +12,7 @@ const port = process.env.PORT;
 app.use(bodyParser.json("application/json"));
 
 app.post("/webhook", async (req, res) => {
-    console.log("Req Received");
+
     const isVerified = await verifyWebhookSignature(req, res);
     if (!isVerified) {
         console.error("Webhook Auth failed");
@@ -22,8 +22,9 @@ app.post("/webhook", async (req, res) => {
     if (! await verifyDocument(req.body[0].data)) {
         console.error("Wrong Doc");
         return res.status(204).send("Completed Document Not intended for this process");
-    }
-
+    };
+    
+    console.log("Adding request to Queue...")
     await producer.publishMessage("Webhook Payload", req.body[0].data);
 
     res.status(201).send("Processing your request");
